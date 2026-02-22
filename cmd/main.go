@@ -38,7 +38,7 @@ func main() {
 	db := client.Database("user_management")
 	logger := utils.NewLogger("user-service")
 	passwordHasher := utils.NewBcryptHasher(10)
-	authManager := auth.NewJWTManager("secret")
+	authManager := auth.NewJWTManager(os.Getenv("JWT_SECRET_KEY"))
 	validator := validator.NewValidator()
 
 	userRepo := repositories.NewUserRepository(db, "users")
