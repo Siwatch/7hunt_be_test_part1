@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  golang-app:
+    build: .
+    image: golang-user-management-app:latest
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      MONGODB_URI: "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    container_name: golang-user-management-container
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      TZ: Asia/Bangkok
+    container_name: mongodb-container
